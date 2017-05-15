@@ -1,0 +1,67 @@
+/**
+*funcao que guarda a informacao do ficheiro "linhas.txt" no parametro linhas
+@param linhas vector que armazena a informacao de cada condutor presente no ficheiro .txt
+@param linha, linha vazia para ir fazendo os ciclos
+*/
+bool read_linhas(vector<linha> &linhas)
+{
+	ifstream myfile;
+	char dummy;				// variavel para tirar os valores que nao pretendemos				
+	linha a;				// linha criada para guardar a informaçao e fazer push_back() no vectors
+	string b;				// fazemos getline para aqui	
+
+	myfile.open("linhas.txt");
+	if (!myfile.is_open())
+	{
+		cerr << "Ficheiro nao encontrado !\n";
+		return(false);
+	}
+	else
+	{
+		while (myfile.good())
+		{	 
+			istringstream ss;               //para ser mais facil a extracao
+			getline(myfile, b, '\n');       //passamos a primeira linha para b
+			ss.str(b);						//201 ; 20 ; Paranhos, Monte dos Burgos, ISEP, Hospital de Sao Joao; 10, 20, 45
+			ss >> a.id;						//o inteiro(201)
+			ss >> dummy;					//tira o ';'
+			ss >> a.freq_circulaçao;		//frequencia(20)
+			ss >> dummy;					//tira o ';'
+
+
+			string c;
+			getline(ss, c, ';');			// c = "Paranhos, Monte dos Burgos, ISEP, Hospital de Sao Joao"
+			c = c + ",";					// c = " Paranhos, Monte dos Burgos, ISEP, Hospital de Sao Joao,"
+			stringstream ss2;
+			ss2.str(c);
+
+
+			while (getline(ss2, c, ','))
+			{
+				c.erase(0, 1);
+				a.paragens.push_back(c);
+			}
+
+			string d;
+			int e;
+			getline(ss, d);
+			d = d + ",";
+			stringstream ss3;
+			ss3.str(d);
+
+			while (getline(ss3, d, ','))
+			{
+				e = stoi(d);
+				a.tempo_paragens.push_back(e);
+			}
+
+			linhas.push_back(a);	//guarda a linha no vetor
+			linha reset;
+			a = reset;
+
+		}
+
+		myfile.close();
+		return true;
+	}
+}

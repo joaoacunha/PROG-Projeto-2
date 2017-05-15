@@ -1,0 +1,202 @@
+
+//START: 29/03/2017
+//DEADLINE: 18/04/2017
+//FINISH DATE: 10/04/2017
+//CODED BY: JF
+
+//ENTRY_LOG: 29/03/17
+
+#include <vector>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+//0- Duvidas e problemas
+/*
+i- read_linhas() -> há problema em usar a mesma string n para extrair tudo da linha? (utiliza-la varias vezes?)
+legibilidade vs varias variaveis
+
+ii- endl vs newlinw
+
+ii- é melhor usar string streams e fazer o que estou a fazer agora, ou da outra maneira? (mostrar codigo t1 ano passado)
+*/
+
+
+
+//1- STRUCTS
+struct linha {
+	int id;
+	int freq_circulaçao;
+	vector<string> lista_paragens;
+	vector<int> lista_tempo_entre_paragens;
+};
+
+struct condutor {
+	int id;
+	string nome;
+	int turno;
+	int horas_max;
+	int horas_descanso;
+};
+
+//2 - FUNCTIONS
+
+//2 - A - SAVING THE DATA OF THE FILES IN VECTORS;
+
+/**
+*funcao que guarda a informacao do ficheiro "linhas.txt" no parametro lista_linhas
+@param lista_linhas vector que armazena a informacao de cada condutor presente no ficheiro .txt
+*/
+bool read_linha(vector<linha> &lista_linhas)
+{
+	ifstream myfile;
+
+	myfile.open("linhas.txt");
+	if (!myfile.is_open())
+	{
+		cerr << "Ficheiro nao encontrado !\n";
+		return(false);
+	}
+	else
+	{
+		while (myfile)
+		{
+			// variavel para tirar os valores que nao pretendemos
+			char dummy;
+			// linha criada para guardar a informaçao e fazer push_back() no vector
+			linha a;
+			// string para tirar os numeros de cada linha do ficheiro e guarda-los na variavel certa da struct
+			string n;
+			// fazemos getline para aqui
+			string linha_ficheiro;
+			// passamos para stringstream para mais fácil extracao
+			istringstream linha_vector;
+
+			getline(myfile, linha_ficheiro);
+			linha_vector.str(linha_ficheiro);
+
+			//201 ; 20 ; Paranhos, Monte dos Burgos, ISEP, Hospital de Sao Joao; 10, 20, 45
+			//id(pop_back() limpa o espaço vazio da string
+			linha_vector >> a.id;
+			
+			//tira o ';'
+			linha_vector >> dummy;
+
+			//frequencia
+			linha_vector >> a.freq_circulaçao;
+
+			//tira o ';'
+			linha_vector >> dummy;
+
+			//lista de paragens - linha_vector = Paranhos, Monte dos Burgos, ISEP, Hospital de Sao Joao; 10, 20, 45
+			int contador = 0;
+			// ve o proximo
+			char proximo;
+			string proximo2;
+			linha_vector >> ;
+			{
+				//variavel para ir guardando cada paragem
+				a.lista_paragens[contador] = z;
+				contador++;
+			}
+
+			//lista do tempo entre paragens
+			int contador2 = 0;
+			while (myfile.peek() != ';')
+			{
+				
+				a.lista_tempo_entre_paragens[contador2] = stoi(n);
+				contador2++;
+			}
+			lista_linhas.push_back(a);
+		}
+
+
+		return (true);
+	}
+}
+
+/**
+*funcao que guarda a informacao do ficheiro "condutor.txt" no parametro
+@param lista_condutor vector que armazena a informacao de cada condutor presente no ficheiro .txt
+*/
+bool read_cliente(vector<condutor> &lista_condutor)
+{
+	ifstream myfile;
+	condutor a;
+	string n;
+
+	myfile.open("condutor.txt");
+	if (!myfile.is_open())
+	{
+		cerr << "Ficheiro nao encontrado! /n";
+		return false;
+	}
+
+	else
+	{
+		//1; Antonio Manuel; 4; 36; 2
+		//Id
+		getline(myfile, n, ';');
+		a.id = stoi(n);
+
+		//Nome
+		getline(myfile, n, ';');
+		//retira os espaços antes e depois do nome
+		n.erase(0, 1);
+		n.pop_back();
+
+
+
+	}
+
+
+
+
+}
+
+
+
+
+int main()
+{
+	vector<linha> lista_linhas;
+	vector<condutor> lista_condutores;
+
+	//TESTS
+	/*
+	//1- read_linhas
+
+	read_linha(lista_linhas);
+	for (unsigned int i = 0; i < lista_linhas.size(); i++)
+	{
+	cout << "id: " << lista_linhas[i].id << " ; frequencia: " << lista_linhas[i].freq_circulaçao << " ; lista de paragens: ";
+
+	for (unsigned int j = 0; j < lista_linhas[i].lista_paragens.size(); j++)
+	{
+	cout << lista_linhas[i].lista_paragens[j] << ", ";
+	}
+
+	cout << "; lista de tempo entre as paragens: ";
+
+	for (unsigned int k = 0; k < lista_linhas[i].lista_tempo_entre_paragens.size(); k++)
+	{
+	cout << lista_linhas[i].lista_tempo_entre_paragens[k] << ", ";
+	}
+
+	cout << endl;
+
+	}
+	*/
+
+
+
+
+
+
+
+}
